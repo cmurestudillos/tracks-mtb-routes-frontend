@@ -4,9 +4,12 @@ import service from '../service/config.service';
 import CrearMapaRutaLeaflet from './CrearMapaRutaLeaflet';
 import provinciasJson from '../assets/data/comunidades.json';
 import FotoRuta from './FotoRuta';
+import { parseGPX } from '../utils/gpxParser';
 
 function FormCrearRuta() {
   const navigate = useNavigate();
+
+  // Campos del formulario
   const [name, setName] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [distanciaEnKm, setDistanciaenKm] = useState('');
@@ -17,9 +20,64 @@ function FormCrearRuta() {
   const [image, setImage] = useState();
   const [coordinatesStart, setCoordinatesStart] = useState();
   const [coordinatesEnd, setCoordinatesEnd] = useState();
+
+  // GPX
+  const [gpxData, setGpxData] = useState(null); // puntos del track para preview
+  const [gpxUrl, setGpxUrl] = useState(null); // URL en Vercel Blob
+  const [gpxLoading, setGpxLoading] = useState(false);
+  const [gpxError, setGpxError] = useState(null);
+  const [gpxFileName, setGpxFileName] = useState(null);
+
+  // Estado general
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // ── Manejador de archivo GPX ──────────────────────────────────────────────
+  const handleGPXUpload = async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setGpxError(null);
+    setGpxLoading(true);
+    setGpxFileName(file.name);
+
+    try {
+      // 1. Parsear el GPX en el browser
+      const text = await file.text();
+      const parsed = parseGPX(text);
+
+      // 2. Auto-rellenar campos disponibles
+      if (parsed.name && !name) setName(parsed.name);
+      setDistanciaenKm(String(parsed.distanciaEnKm));
+      setDesnivelEnM(String(parsed.desnivelEnM));
+      if (parsed.duracionEnHoras) setDuracionEnHoras(String(parsed.duracionEnHoras));
+      setCoordinatesStart(parsed.coordinatesStart);
+      setCoordinatesEnd(parsed.coordinatesEnd);
+      setGpxData(parsed);
+
+      // 3. Subir el GPX a Vercel Blob
+      const formData = new FormData();
+      formData.append('gpx', file);
+      const res = await service.post('/upload/gpx', formData);
+      setGpxUrl(res.data.gpxUrl);
+    } catch (err) {
+      setGpxError(err.message || 'Error procesando el archivo GPX.');
+      setGpxData(null);
+    } finally {
+      setGpxLoading(false);
+    }
+  };
+
+  const handleRemoveGPX = () => {
+    setGpxData(null);
+    setGpxUrl(null);
+    setGpxFileName(null);
+    setGpxError(null);
+    setCoordinatesStart(undefined);
+    setCoordinatesEnd(undefined);
+  };
+
+  // ── Submit ────────────────────────────────────────────────────────────────
   const handleSubmit = async event => {
     event.preventDefault();
     setError(null);
@@ -36,6 +94,7 @@ function FormCrearRuta() {
         image,
         coordinatesStart,
         coordinatesEnd,
+        ...(gpxUrl && { gpxUrl }),
       });
       navigate('/rutas');
     } catch (err) {
@@ -46,6 +105,65 @@ function FormCrearRuta() {
 
   return (
     <form onSubmit={handleSubmit} className="ruta-form">
+      {/* Sección GPX */}
+      <div className="ruta-form-card gpx-card">
+        <h3 className="ruta-form-section-title">
+          <span className="ruta-form-section-icon">📡</span>
+          Importar desde GPX
+          <span className="gpx-optional-badge">Opcional</span>
+        </h3>
+        <p className="ruta-form-hint">
+          Sube un archivo GPX grabado con Garmin, Wahoo, Strava, Komoot o cualquier dispositivo GPS. Los campos de
+          distancia, desnivel, duración y coordenadas se rellenarán automáticamente.
+        </p>
+
+        {!gpxData ? (
+          <label className={`gpx-upload-area ${gpxLoading ? 'gpx-loading' : ''}`}>
+            <input
+              type="file"
+              accept=".gpx,application/gpx+xml"
+              onChange={handleGPXUpload}
+              disabled={gpxLoading}
+              style={{ display: 'none' }}
+            />
+            {gpxLoading ? (
+              <span className="gpx-uploading-text">⏳ Procesando GPX...</span>
+            ) : (
+              <>
+                <span className="gpx-upload-icon">🗂️</span>
+                <span className="gpx-upload-label">
+                  Haz click para seleccionar un archivo <strong>.gpx</strong>
+                </span>
+                <span className="gpx-upload-hint">o arrastra aquí el archivo</span>
+              </>
+            )}
+          </label>
+        ) : (
+          <div className="gpx-success">
+            <div className="gpx-success-info">
+              <span className="gpx-success-icon">✅</span>
+              <div>
+                <p className="gpx-success-filename">{gpxFileName}</p>
+                <p className="gpx-success-stats">
+                  {distanciaEnKm} km · {desnivelEnM} m desnivel
+                  {duracionEnHoras ? ` · ${duracionEnHoras} h` : ''}
+                  {` · ${gpxData.points.length.toLocaleString()} puntos`}
+                </p>
+              </div>
+            </div>
+            <button type="button" className="gpx-remove-btn" onClick={handleRemoveGPX}>
+              Eliminar GPX
+            </button>
+          </div>
+        )}
+
+        {gpxError && (
+          <p className="auth-error" style={{ marginTop: 10 }}>
+            {gpxError}
+          </p>
+        )}
+      </div>
+
       {/* Sección 1 — Información básica */}
       <div className="ruta-form-card">
         <h3 className="ruta-form-section-title">
@@ -76,7 +194,6 @@ function FormCrearRuta() {
               <option value="profesional">🔴 Profesional</option>
             </select>
           </div>
-
           <div className="ruta-field">
             <label className="ruta-label">Modalidad</label>
             <select className="ruta-select" required onChange={e => setModalidad(e.target.value)} value={modalidad}>
@@ -107,6 +224,7 @@ function FormCrearRuta() {
         <h3 className="ruta-form-section-title">
           <span className="ruta-form-section-icon">📊</span>
           Estadísticas
+          {gpxData && <span className="gpx-autofill-badge">✨ Relleno automático desde GPX</span>}
         </h3>
 
         <div className="ruta-grid-3">
@@ -126,7 +244,6 @@ function FormCrearRuta() {
               <span className="ruta-unit">km</span>
             </div>
           </div>
-
           <div className="ruta-field">
             <label className="ruta-label">Desnivel</label>
             <div className="ruta-input-unit">
@@ -142,7 +259,6 @@ function FormCrearRuta() {
               <span className="ruta-unit">m</span>
             </div>
           </div>
-
           <div className="ruta-field">
             <label className="ruta-label">Duración</label>
             <div className="ruta-input-unit">
@@ -176,15 +292,24 @@ function FormCrearRuta() {
       <div className="ruta-form-card">
         <h3 className="ruta-form-section-title">
           <span className="ruta-form-section-icon">🗺️</span>
-          Traza tu ruta
+          {gpxData ? 'Trazado importado del GPX' : 'Traza tu ruta manualmente'}
         </h3>
-        <p className="ruta-form-hint">Haz click en el mapa para marcar el punto de inicio y el punto final.</p>
-        <CrearMapaRutaLeaflet setCoordinatesStart={setCoordinatesStart} setCoordinatesEnd={setCoordinatesEnd} />
+        <p className="ruta-form-hint">
+          {gpxData
+            ? `Track con ${gpxData.points.length.toLocaleString()} puntos GPS. Puedes ajustar los marcadores si lo necesitas.`
+            : 'Haz click en el mapa para marcar el punto de inicio y el punto final.'}
+        </p>
+        <CrearMapaRutaLeaflet
+          setCoordinatesStart={setCoordinatesStart}
+          setCoordinatesEnd={setCoordinatesEnd}
+          gpxPolyline={gpxData?.polyline}
+          gpxStart={gpxData ? gpxData.coordinatesStart : null}
+          gpxEnd={gpxData ? gpxData.coordinatesEnd : null}
+        />
       </div>
 
-      {/* Submit */}
       {error && (
-        <p className="auth-error" style={{ maxWidth: 680, margin: '0 auto 12px' }}>
+        <p className="auth-error" style={{ maxWidth: 720, margin: '0 auto 12px' }}>
           {error}
         </p>
       )}
