@@ -1,0 +1,43 @@
+:root {
+  --gradient: linear-gradient(90deg, #d53369 0%, #daae51 100%);
+  --gradient-start: #d53369;
+  --gradient-end: #daae51;
+
+  --bg: #f7f3ee;
+  --bg-card: #ffffff;
+  --text: #1c1c2e;
+  --text-muted: #6b7280;
+  --text-on-gradient: #ffffff;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text);
+  background-color: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+}
+
+/* Layout flex para footer siempre al fondo */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+.app-main {
+  flex: 1;
+}

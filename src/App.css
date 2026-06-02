@@ -1,0 +1,1962 @@
+#root {
+  max-width: 100vw;
+  margin: 0;
+  text-align: center;
+}
+
+/* ===================================================
+   NAVBAR
+=================================================== */
+.navbar {
+  display: flex;
+  background: var(--gradient);
+  width: 100%;
+  color: var(--text-on-gradient);
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0;
+  top: 0;
+  left: 0;
+  box-shadow: 0 2px 12px rgba(213, 51, 105, 0.25);
+}
+
+/* Logo de texto en navbar */
+.navbar-logo {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 0;
+  line-height: 1;
+}
+
+.navbar-logo-tracks {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.navbar-logo-mtb {
+  color: #ffffff;
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo-search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 60px;
+  margin-bottom: 15px;
+}
+
+/* ===================================================
+   SEARCH BAR
+=================================================== */
+.searchbar {
+  position: relative;
+}
+
+.searchbar-wrapper {
+  position: relative;
+  width: 220px;
+}
+
+/* Input row */
+.searchbar-input-row {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50px;
+  padding: 5px 10px;
+  gap: 6px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.searchbar-input-row:focus-within,
+.searchbar-input-row.searchbar-open {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: transparent;
+  border-radius: 12px 12px 0 0;
+}
+
+.searchbar-icon {
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-shrink: 0;
+}
+
+.searchbar-input-row:focus-within .searchbar-icon,
+.searchbar-input-row.searchbar-open .searchbar-icon {
+  color: var(--text-muted);
+}
+
+.searchbar-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  font-family: inherit;
+  padding: 0;
+}
+
+.searchbar-input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.searchbar-input-row:focus-within .searchbar-input,
+.searchbar-input-row.searchbar-open .searchbar-input {
+  color: var(--text);
+}
+
+.searchbar-input-row:focus-within .searchbar-input::placeholder,
+.searchbar-input-row.searchbar-open .searchbar-input::placeholder {
+  color: var(--text-muted);
+}
+
+.searchbar-clear {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.searchbar-clear:hover {
+  opacity: 1;
+  transform: none;
+}
+
+/* Dropdown */
+.searchbar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  overflow: hidden;
+}
+
+/* Loading dots */
+.searchbar-loading {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 14px;
+}
+
+.searchbar-loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gradient-start);
+  animation: searchDot 1.2s ease-in-out infinite;
+}
+
+.searchbar-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.searchbar-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes searchDot {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+.searchbar-empty {
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 0;
+}
+
+/* Lista de resultados */
+.searchbar-results {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.searchbar-result-item {
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.searchbar-result-item:last-child {
+  border-bottom: none;
+}
+
+.searchbar-result-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  text-decoration: none;
+  transition: background 0.1s;
+}
+
+.searchbar-result-link:hover {
+  background: #f9fafb;
+}
+
+.searchbar-result-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.searchbar-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.searchbar-result-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.searchbar-result-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===================================================
+   BOTONES — globales
+=================================================== */
+button {
+  background: var(--gradient);
+  color: var(--text-on-gradient);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  box-shadow: var(--shadow-sm);
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.btn-atras {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 50px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 7px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.btn-rutas {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 50px;
+  padding: 10px 28px;
+  letter-spacing: 0.5px;
+}
+
+.logoutbtn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  margin-right: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+}
+
+.logoutbtn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.menu {
+  margin-left: 50px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+}
+
+/* ===================================================
+   FOOTER
+=================================================== */
+.footer {
+  display: flex;
+  background: var(--gradient);
+  color: var(--text-on-gradient);
+  justify-content: center;
+  align-items: center;
+  padding: 18px 40px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 -2px 12px rgba(213, 51, 105, 0.2);
+  margin-top: auto;
+}
+
+.footer a,
+.footer p {
+  color: var(--text-on-gradient);
+  text-decoration: none;
+}
+
+.footer p {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ===================================================
+   PÁGINAS / LAYOUT
+=================================================== */
+.pagina {
+  padding: 20px;
+  min-height: 50vh;
+}
+
+.homepage {
+  padding-top: 10px;
+}
+
+/* ===================================================
+   ACCESS PAGE — landing para usuarios sin sesión
+=================================================== */
+.access-page {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 24px;
+}
+
+.access-hero {
+  background: var(--gradient);
+  border-radius: var(--radius);
+  padding: 40px 48px;
+  color: var(--text-on-gradient);
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(213, 51, 105, 0.3);
+}
+
+.access-hero h1 {
+  margin: 0 0 12px 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.access-hero p {
+  margin: 0;
+  font-size: 1.05rem;
+  opacity: 0.92;
+  line-height: 1.6;
+}
+
+.access-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.access-btn {
+  padding: 12px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.access-btn-primary {
+  background: var(--gradient);
+  color: var(--text-on-gradient);
+  box-shadow: 0 4px 16px rgba(213, 51, 105, 0.35);
+}
+
+.access-btn-secondary {
+  background: var(--bg-card);
+  color: var(--gradient-start);
+  border: 2px solid var(--gradient-start);
+  box-shadow: var(--shadow-sm);
+}
+
+.access-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.access-forms {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ===================================================
+   FORMULARIOS DE AUTH
+=================================================== */
+.auth-form {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.auth-form h2 {
+  margin: 0 0 24px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.auth-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.auth-field input {
+  padding: 10px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+.auth-field input:focus {
+  border-color: var(--gradient-start);
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+}
+
+.auth-error {
+  color: var(--gradient-start);
+  font-size: 0.875rem;
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  background: rgba(213, 51, 105, 0.08);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--gradient-start);
+}
+
+/* ===================================================
+   TEXTO INTRO (sin login)
+=================================================== */
+.texto-intro {
+  border-left: 4px solid var(--gradient-start);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  background: var(--bg-card);
+  color: var(--text);
+  text-align: left;
+  line-height: 1.7;
+  box-shadow: var(--shadow-sm);
+  max-width: 600px;
+}
+
+/* ===================================================
+   FORMULARIOS GENERALES
+=================================================== */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid rgba(213, 51, 105, 0.2);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  width: 80%;
+  margin-left: 10%;
+  padding: 24px 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===================================================
+   TARJETAS DE RUTAS
+=================================================== */
+.card-container2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.card2 {
+  width: 27vw;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  border-top: 4px solid transparent;
+  border-image: var(--gradient) 1;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card2:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(213, 51, 105, 0.15);
+}
+
+.image-card {
+  width: 150px;
+  border-radius: var(--radius-sm);
+}
+
+/* ===================================================
+   TARJETAS DE RESEÑAS
+=================================================== */
+.card-review {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 85px;
+  margin-bottom: 20px;
+  width: 80vw;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--gradient-start);
+}
+
+/* ===================================================
+   SPINNER
+=================================================== */
+.spinner {
+  padding-left: 50px;
+}
+
+.spinner2 {
+  display: flex;
+  flex-direction: row;
+}
+
+/* ===================================================
+   MAPAS LEAFLET
+=================================================== */
+
+/* Regla base: todos los mapas ocupan el ancho de su contenedor */
+.leaflet-container {
+  width: 100% !important;
+  height: 320px;
+  border-radius: var(--radius-sm);
+  z-index: 0;
+}
+
+/* Wrapper de los mapas en el formulario crear ruta */
+.mapa-wrapper {
+  position: relative;
+  z-index: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.mapa-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.mapas-leaflet {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Mapa en la página de detalles de ruta */
+.mapa-detalles-ruta {
+  position: relative;
+  z-index: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.mapa-detalles-ruta .leaflet-container {
+  height: 380px;
+}
+
+/* ===================================================
+   ABOUT
+=================================================== */
+.parrafo-about {
+  display: flex;
+  margin-left: 15%;
+  margin-right: 20%;
+  flex-direction: column;
+  text-align: justify;
+  width: 70vw;
+  border: 2px solid rgba(213, 51, 105, 0.2);
+  border-radius: var(--radius);
+  padding: 20px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.nombres-about {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.enlaces-about {
+  display: flex;
+  flex-direction: row;
+}
+
+/* ===================================================
+   RESPONSIVE MOBILE
+=================================================== */
+@media (max-width: 450px) {
+  .mapas-leaflet {
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .footer {
+    padding: 20px 16px;
+  }
+
+  .form {
+    width: 95%;
+    margin-left: 9px;
+  }
+
+  .leaflet-container {
+    width: 85vw;
+    height: 250px;
+    margin-left: 5px;
+  }
+
+  .logo-search {
+    padding-left: 30px;
+    margin-bottom: 15px;
+  }
+
+  .card-container2 {
+    gap: 16px;
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .card2 {
+    width: 90vw;
+    text-decoration: none;
+  }
+
+  .image-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .mapa-detalles-ruta {
+    margin-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .card-review {
+    margin-left: 12px;
+    width: calc(100vw - 24px);
+  }
+
+  .spinner {
+    padding-left: 0;
+  }
+
+  .nombres-about {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+
+  .access-hero {
+    padding: 28px 24px;
+  }
+
+  .access-hero h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ===================================================
+   HERO CAROUSEL
+=================================================== */
+.hero-carousel {
+  width: 100%;
+  position: relative;
+  line-height: 0;
+}
+
+/* Bootstrap override: sin padding en caption */
+.hero-carousel .carousel {
+  width: 100%;
+}
+
+.hero-slide-link {
+  display: block;
+  text-decoration: none;
+}
+
+.hero-slide {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+}
+
+.hero-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.hero-carousel .carousel-item:hover .hero-slide-img {
+  transform: scale(1.03);
+}
+
+/* Overlay oscuro en la parte inferior */
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Caption personalizado */
+.hero-caption {
+  bottom: 24px !important;
+  left: 0 !important;
+  right: 0 !important;
+  text-align: left !important;
+  padding: 0 40px !important;
+}
+
+.hero-caption-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.hero-badge {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 50px;
+  text-transform: capitalize;
+}
+
+.hero-badge-secondary {
+  background: rgba(218, 174, 81, 0.25);
+  border-color: rgba(218, 174, 81, 0.4);
+}
+
+.hero-caption-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  line-height: 1.2;
+}
+
+.hero-caption-meta {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Controles del carrusel (flechas) */
+.hero-carousel .carousel-control-prev,
+.hero-carousel .carousel-control-next {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 12px;
+}
+
+.hero-carousel .carousel-control-prev {
+  left: 12px;
+}
+
+.hero-carousel .carousel-control-next {
+  right: 12px;
+}
+
+/* Indicadores */
+.hero-carousel .carousel-indicators button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  margin: 0 3px;
+}
+
+.hero-carousel .carousel-indicators .active {
+  background: #fff;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ===================================================
+   HOMEPAGE — SECCIONES
+=================================================== */
+.homepage {
+  padding-top: 0;
+}
+
+/* Sección CTA */
+.homepage-cta {
+  padding: 52px 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.homepage-cta-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.homepage-cta-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.homepage-cta-text {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+
+.homepage-cta-btn {
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(213, 51, 105, 0.35);
+  transition: all 0.2s;
+}
+
+.homepage-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(213, 51, 105, 0.45);
+}
+
+/* Sección mapa de provincias */
+.homepage-map-section {
+  padding: 52px 20px 60px;
+  background: var(--bg);
+}
+
+.homepage-map-header {
+  max-width: 680px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.homepage-map-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.homepage-map-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Wrapper del mapa de provincias */
+.province-map-wrapper {
+  max-width: 920px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #d53369 0%, #c0304d 50%, #daae51 100%);
+  border-radius: 20px;
+  padding: 20px 20px 12px;
+  box-shadow: 0 8px 32px rgba(213, 51, 105, 0.25);
+  /* overflow visible para que las provincias del borde no queden clipadas */
+  overflow: visible;
+}
+
+.province-map {
+  width: 100%;
+  /* Evitar que el SVG desborde el borde redondeado */
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Tooltip de provincia */
+.province-tooltip {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-height: 22px;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+  transition: all 0.15s;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hero-slide {
+    height: 280px;
+  }
+
+  .hero-caption-title {
+    font-size: 1.2rem;
+  }
+
+  .hero-caption {
+    padding: 0 20px !important;
+    bottom: 16px !important;
+  }
+
+  .homepage-cta {
+    padding: 36px 20px;
+  }
+
+  .homepage-cta-title {
+    font-size: 1.3rem;
+  }
+
+  .homepage-map-section {
+    padding: 36px 12px 40px;
+  }
+
+  .province-map-wrapper {
+    border-radius: 14px;
+    padding: 16px 8px 8px;
+  }
+}
+
+/* ===================================================
+   ESTRELLAS — StarRating / StarDisplay
+=================================================== */
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-size: 1.8rem;
+  color: #d1d5db;
+  padding: 0 2px;
+  cursor: pointer;
+  transition: color 0.1s, transform 0.1s;
+  line-height: 1;
+}
+
+.star-btn:hover,
+.star-btn.star-active {
+  color: #f59e0b;
+  transform: scale(1.15);
+  opacity: 1;
+}
+
+.star-value-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+
+.star-display {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1rem;
+}
+
+.star-filled {
+  color: #f59e0b;
+}
+
+.star-empty {
+  color: #d1d5db;
+}
+
+/* ===================================================
+   FORMULARIO RESEÑA
+=================================================== */
+.resena-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resena-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+/* Review card mejorada */
+.review-card-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.review-rating-row {
+  margin: 6px 0 8px;
+}
+
+/* ===================================================
+   USER RUTAS — cabecera con botón nueva ruta
+=================================================== */
+.user-rutas-header-right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Badge "mía" en tarjeta */
+.ruta-card-mine {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--gradient-start);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 50px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* ===================================================
+   PÁGINA RUTAS — listado
+=================================================== */
+.rutas-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.rutas-header {
+  padding: 20px 0 24px;
+  text-align: left;
+}
+
+.rutas-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 4px 0 4px;
+}
+
+.rutas-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.rutas-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+/* Grid de tarjetas */
+.rutas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.ruta-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ruta-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ruta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+/* Imagen de la tarjeta */
+.ruta-card-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.ruta-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Badge de dificultad sobre la imagen */
+.ruta-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Cuerpo de la tarjeta */
+.ruta-card-body {
+  padding: 14px 16px 16px;
+}
+
+.ruta-card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ruta-card-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+/* Stats de la tarjeta */
+.ruta-card-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+
+.ruta-card-stats span strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Responsive rutas */
+@media (max-width: 900px) {
+  .rutas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .rutas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===================================================
+   PÁGINA DETALLES DE RUTA
+=================================================== */
+.detalle-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+.detalle-back {
+  margin: 16px 20px 8px;
+}
+
+/* Hero image */
+.detalle-hero {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.detalle-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Contenido */
+.detalle-content {
+  padding: 0 20px;
+}
+
+/* Cabecera info */
+.detalle-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 0 16px;
+}
+
+.detalle-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.detalle-meta {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.detalle-difficulty-badge {
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 50px;
+  text-transform: capitalize;
+  margin-top: 4px;
+}
+
+/* Stats */
+.detalle-stats {
+  display: flex;
+  gap: 0;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.detalle-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px;
+  border-right: 1px solid #f0f0f0;
+}
+
+.detalle-stat:last-child {
+  border-right: none;
+}
+
+.detalle-stat-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.detalle-stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* Acciones del propietario */
+.detalle-owner-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+/* Sección reseñas */
+.detalle-reviews-section {
+  margin-top: 8px;
+}
+
+.detalle-reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.detalle-reviews-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detalle-reviews-count {
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 50px;
+}
+
+.detalle-review-btn {
+  padding: 8px 18px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: 50px;
+}
+
+.detalle-review-form-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.detalle-reviews-empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.detalle-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Tarjeta de reseña */
+.review-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--gradient-start);
+  text-align: left;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-author {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.review-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 6px;
+}
+
+.review-description {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+
+.review-img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+/* Responsive detalles */
+@media (max-width: 600px) {
+  .detalle-hero {
+    height: 220px;
+  }
+
+  .detalle-name {
+    font-size: 1.3rem;
+  }
+
+  .detalle-stats {
+    flex-wrap: wrap;
+  }
+
+  .detalle-stat {
+    flex: 1 1 50%;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .detalle-stat:nth-child(2n) {
+    border-right: none;
+  }
+
+  .detalle-info-header {
+    flex-direction: column;
+  }
+}
+
+/* ===================================================
+   PÁGINA CREAR RUTA
+=================================================== */
+.crear-ruta-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+.crear-ruta-header {
+  padding: 20px 0 8px;
+  text-align: left;
+}
+
+.crear-ruta-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 4px 0 4px;
+}
+
+.crear-ruta-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Tarjeta de sección del formulario */
+.ruta-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ruta-form-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+}
+
+.ruta-form-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ruta-form-section-icon {
+  font-size: 1.1rem;
+}
+
+.ruta-form-hint {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  margin: -8px 0 16px;
+}
+
+/* Campo individual */
+.ruta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.ruta-field:last-child {
+  margin-bottom: 0;
+}
+
+.ruta-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ruta-input,
+.ruta-select {
+  padding: 10px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color 0.2s;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ruta-input:focus,
+.ruta-select:focus {
+  border-color: var(--gradient-start);
+}
+
+/* Input con unidad (km, m, h) */
+.ruta-input-unit {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ruta-input-unit .ruta-input {
+  padding-right: 42px;
+}
+
+.ruta-unit {
+  position: absolute;
+  right: 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Grids de columnas */
+.ruta-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ruta-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* Submit */
+.ruta-form-submit {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ruta-submit-btn {
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 13px 40px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(213, 51, 105, 0.35);
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.ruta-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(213, 51, 105, 0.4);
+}
+
+.ruta-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .ruta-grid-2,
+  .ruta-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .ruta-form-submit {
+    justify-content: stretch;
+  }
+
+  .ruta-submit-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ===================================================
+   PERFIL DE USUARIO
+=================================================== */
+.profile-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+/* Botón volver del perfil */
+.profile-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 8px 0;
+  margin: 12px 16px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.profile-back:hover {
+  color: var(--gradient-start);
+  transform: none;
+  opacity: 1;
+}
+
+/* Tarjeta blanca con contenido del perfil */
+.profile-card {
+  background: var(--bg-card);
+  margin: 0 16px 32px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 24px 32px;
+  position: relative;
+  /* Línea de acento con gradiente en la parte superior */
+  border-top: 4px solid transparent;
+  border-image: var(--gradient) 1;
+}
+
+/* Avatar centrado en la parte superior de la tarjeta */
+.profile-avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+  background: #f0f0f0;
+}
+
+/* Info del usuario */
+.profile-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-username {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0 0 4px 0;
+}
+
+.profile-email {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Stats: rutas / favoritas */
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 24px;
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.profile-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+
+.profile-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.profile-stat-divider {
+  width: 1px;
+  height: 36px;
+  background: #e5e7eb;
+}
+
+/* Botones de acción */
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.profile-action-btn {
+  padding: 10px 28px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+}
+
+.profile-action-primary {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(213, 51, 105, 0.3);
+}
+
+.profile-action-secondary {
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.profile-action-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Error */
+.profile-error {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+/* Sección de edición */
+.profile-edit-section {
+  margin-top: 28px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 24px;
+}
+
+/* Tabs de edición */
+.profile-edit-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-edit-tab {
+  padding: 7px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--bg);
+  color: var(--text-muted);
+  border: 2px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.profile-edit-tab:hover {
+  border-color: var(--gradient-start);
+  color: var(--gradient-start);
+  transform: none;
+  opacity: 1;
+}
+
+.profile-edit-tab.active {
+  background: var(--gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(213, 51, 105, 0.3);
+}
+
+/* Formulario de edición */
+.profile-edit-form {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+}
+
+.profile-edit-form .auth-field {
+  margin-bottom: 14px;
+}
+
+.profile-edit-form .auth-field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive */
+@media (max-width: 450px) {
+  .profile-page {
+    padding-bottom: 40px;
+  }
+
+  .profile-card {
+    margin: 0 8px;
+    padding: 0 16px 24px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-action-btn {
+    justify-content: center;
+  }
+}
