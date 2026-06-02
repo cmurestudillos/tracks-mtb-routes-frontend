@@ -8,11 +8,33 @@
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-11-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
 
-**SPA para explorar y compartir rutas de mountain bike por España**
+**SPA para explorar y compartir rutas MTB por España**
 
-[Demo](https://tracks-mtb.netlify.app) · [API Backend](https://tracks-mtb-api.vercel.app/api-docs)
+[Demo](https://tracks-mtb-routes.vercel.app) · [API Docs](https://tracks-mtb-routes-service.vercel.app/api-docs)
 
 </div>
+
+---
+
+## Instalación rápida
+
+```bash
+pnpm install
+cp .env.example .env   # editar VITE_SERVER_URL
+pnpm dev               # http://localhost:3000
+```
+
+---
+
+## Variables de entorno
+
+```env
+# Desarrollo
+VITE_SERVER_URL=http://localhost:5005/api
+
+# Producción (Vercel)
+# VITE_SERVER_URL=https://tracks-mtb-routes-service.vercel.app/api
+```
 
 ---
 
@@ -21,128 +43,115 @@
 | Tecnología | Versión | Uso |
 |-----------|---------|-----|
 | React | 18.3 | UI framework |
-| Vite | 5.4 | Build tool y dev server |
+| Vite | 5.4 | Build tool (puerto 3000) |
 | React Router | 6.x | Enrutamiento SPA |
-| Bootstrap | 5.3 | Componentes UI |
+| Bootstrap + React Bootstrap | 5.3 | Carousel, componentes UI |
 | Leaflet + react-leaflet | 1.9 | Mapas interactivos |
 | leaflet-routing-machine | 3.2 | Trazado de rutas |
-| react-simple-maps | 3.0 | Mapa SVG de provincias |
-| axios | 1.x | Cliente HTTP |
-| react-spinners | 0.14 | Indicadores de carga |
-| react-burger-menu | 3.1 | Sidebar móvil |
-| ESLint 8 | legacy config | Linting |
-| Prettier | 3.x | Formateo |
+| react-simple-maps | 3.0 | Mapa SVG provincias de España |
+| axios | 1.x | HTTP client + interceptor JWT |
+| react-burger-menu | 3.1 | Sidebar móvil (slide) |
+| react-spinners | 0.14 | Loading spinners |
 
 ---
 
-## Inicio rápido
+## Diseño — Sistema de colores
 
-```bash
-# Instalar dependencias
-pnpm install
+Gradiente de marca: `linear-gradient(90deg, #d53369 0%, #daae51 100%)`
 
-# Copiar variables de entorno
-cp .env.example .env
-# Edita .env con la URL de tu backend
-
-# Desarrollo (puerto 3000)
-pnpm dev
-
-# Build de producción
-pnpm build
-```
-
----
-
-## Variables de entorno
-
-| Variable | Descripción |
-|----------|-------------|
-| `VITE_SERVER_URL` | URL base de la API — ej: `http://localhost:5005/api` |
-
----
-
-## Estructura
-
-```
-src/
-├── main.jsx                  # Entry point
-├── App.jsx                   # Rutas React Router
-├── App.css                   # Estilos globales y componentes
-├── index.css                 # Variables CSS (gradiente, colores)
-├── Sidebar.css               # Estilos sidebar móvil
-├── globalStyle.module.css    # CSS Module para mapa de provincias
-├── assets/                   # Imágenes e iconos
-├── context/
-│   └── auth.context.jsx      # AuthContext + AuthWrapper (JWT)
-├── service/
-│   └── config.service.js     # Axios instance con interceptor de token
-├── components/
-│   ├── NavbarComp.jsx        # Navbar con logo de texto + búsqueda
-│   ├── SidebarE.jsx          # Sidebar móvil (burger menu)
-│   ├── Footer.jsx            # Footer con enlaces
-│   ├── Carrousel.jsx         # Carrusel rutas destacadas
-│   ├── SearchBar.jsx         # Barra de búsqueda
-│   ├── Spinner.jsx           # Loading spinner
-│   ├── MostrarRuta.jsx       # Leaflet routing machine (visualizar ruta)
-│   ├── CrearMapaRutaLeaflet.jsx  # Mapa para crear rutas
-│   ├── auth/
-│   │   ├── Login.jsx
-│   │   └── Signup.jsx
-│   └── mapaDeProvincias/
-│       ├── Map.jsx           # SVG mapa España con react-simple-maps
-│       └── MapContainer.jsx
-└── pages/
-    ├── Homepage.jsx          # Home: carrusel + mapa provincias
-    ├── AccessPage.jsx        # Landing sin sesión (login/signup)
-    ├── Rutas.jsx             # Listado de rutas
-    ├── RutasProvincia.jsx    # Rutas por provincia
-    ├── DetallesRuta.jsx      # Detalle + mapa + reseñas
-    ├── CrearRuta.jsx         # Crear nueva ruta
-    ├── UserProfile.jsx       # Perfil del usuario
-    ├── UserRutas.jsx         # Mis rutas
-    ├── About.jsx             # Información del proyecto
-    └── error/
-        ├── Error404.jsx
-        └── Error500.jsx
-```
-
----
-
-## Diseño
-
-La identidad visual usa el gradiente `linear-gradient(90deg, #d53369 0%, #daae51 100%)` aplicado a navbar, footer, botones y el sidebar. Los colores se gestionan mediante variables CSS en `index.css`:
+Aplicado en navbar, footer, sidebar, botones principales, hero carousel, mapa de provincias, AccessPage y badges de dificultad.
 
 ```css
---gradient: linear-gradient(90deg, #d53369 0%, #daae51 100%);
---bg: #f7f3ee;
---text: #1c1c2e;
---text-on-gradient: #ffffff;
+--gradient-start: #d53369;   /* magenta/rosa */
+--gradient-end: #daae51;     /* dorado */
+--bg: #f7f3ee;               /* fondo cálido */
+--text: #1c1c2e;             /* casi negro */
 ```
+
+---
+
+## Páginas principales
+
+| Ruta | Descripción |
+|------|-------------|
+| `/` | **Homepage**: hero carousel full-width + CTA + mapa de provincias |
+| `/` (sin login) | **AccessPage**: hero con gradiente + formulario login/signup |
+| `/rutas` | **Rutas**: grid 3 columnas con imagen, badge dificultad y stats |
+| `/rutas/:id` | **DetallesRuta**: hero image + stats bar + mapa Leaflet + reseñas con ⭐ |
+| `/crear-ruta` | **CrearRuta**: formulario por secciones + importar GPX |
+| `/profile` | **UserProfile**: avatar circular + stats + tabs de edición |
+| `/user-rutas` | **UserRutas**: mis rutas con badge "✎ Mía" + botón nueva ruta |
+
+---
+
+## Feature: Importar GPX
+
+En la página `/crear-ruta` puedes subir un archivo `.gpx` grabado con cualquier dispositivo GPS (Garmin, Wahoo, Polar, Strava export, Komoot export, etc.).
+
+**Lo que hace automáticamente:**
+- Extrae distancia (fórmula Haversine sobre todos los puntos)
+- Calcula desnivel acumulado positivo
+- Calcula duración (si el GPX tiene timestamps)
+- Muestra el track completo como Polyline en el mapa
+- Hace zoom automático al área de la ruta
+- Sube el archivo GPX a Vercel Blob y guarda la URL
+
+**Formatos soportados:** GPX 1.0, GPX 1.1, `<trkpt>`, `<rtept>`
+
+---
+
+## Reseñas con valoración
+
+Las reseñas incluyen valoración de 1 a 5 estrellas (obligatoria). Se muestra:
+- Selector interactivo en el formulario (`StarRating`)
+- Display de estrellas en cada tarjeta de reseña (`StarDisplay`)
+
+---
+
+## Iconos
+
+Todos los iconos son SVG inline en `src/components/Icons.jsx` — sin dependencias externas.
+
+`ArrowLeftIcon` · `LogOutIcon` · `HomeIcon` · `PlusCircleIcon` · `UserIcon` · `RouteIcon` · `SearchIcon` · `XIcon` · `MenuIcon`
+
+---
+
+## Buscador
+
+El buscador en la navbar es un dropdown posicionado absolutamente con:
+- Debounce de 700ms
+- Cierre al hacer click fuera
+- Cierre con tecla Escape
+- Thumbnails 42×42px por resultado
+- Máximo 6 resultados
+
+---
+
+## Sidebar
+
+Panel lateral con animación `slide` (react-burger-menu). Se cierra automáticamente al navegar a cualquier página. Estado controlado con `isOpen`.
 
 ---
 
 ## Scripts
 
 ```bash
-pnpm dev          # Desarrollo con hot-reload
-pnpm build        # Build de producción
-pnpm preview      # Preview del build local
-pnpm lint         # Verificar ESLint
-pnpm lint:fix     # Corregir ESLint automáticamente
+pnpm dev          # desarrollo (puerto 3000, hot-reload)
+pnpm build        # build producción
+pnpm preview      # preview del build local
+pnpm lint         # ESLint — 0 errores
+pnpm lint:fix     # corregir automáticamente
 ```
 
 ---
 
-## Deploy en Netlify
+## Deploy en Vercel
 
-El archivo `public/_redirects` ya configura el SPA routing:
-```
-/* /index.html 200
+`vercel.json` en la raíz configura el SPA routing:
+```json
+{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
 ```
 
-Pasos:
-1. Conecta el repositorio en Netlify
-2. Build command: `pnpm build`
-3. Publish directory: `dist`
-4. Añade la variable de entorno `VITE_SERVER_URL` con la URL del backend en producción
+Sin esto, navegar directamente a `/rutas` o `/profile` devuelve 404.
+
+Añade la variable `VITE_SERVER_URL` en **Vercel → Settings → Environment Variables**.
