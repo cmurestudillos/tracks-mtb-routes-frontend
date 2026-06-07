@@ -91,10 +91,11 @@ function FormCrearRuta() {
         duracionEnHoras,
         modalidad,
         provincia,
-        image,
+        ...(image && { image }),
         coordinatesStart,
         coordinatesEnd,
         ...(gpxUrl && { gpxUrl }),
+        ...(gpxData?.polyline?.length && { trackPoints: gpxData.polyline }),
       });
       navigate('/rutas');
     } catch (err) {

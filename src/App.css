@@ -77,7 +77,9 @@
   border-radius: 50px;
   padding: 5px 10px;
   gap: 6px;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .searchbar-input-row:focus-within,
@@ -171,12 +173,24 @@
   animation: searchDot 1.2s ease-in-out infinite;
 }
 
-.searchbar-loading-dot:nth-child(2) { animation-delay: 0.2s; }
-.searchbar-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+.searchbar-loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.searchbar-loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes searchDot {
-  0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
-  40%           { transform: scale(1);   opacity: 1; }
+  0%,
+  80%,
+  100% {
+    transform: scale(0.7);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .searchbar-empty {
@@ -261,7 +275,9 @@ button {
   border-radius: var(--radius-sm);
   padding: 8px 18px;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
   box-shadow: var(--shadow-sm);
 }
 
@@ -558,7 +574,9 @@ button:active {
   color: var(--text);
   border-top: 4px solid transparent;
   border-image: var(--gradient) 1;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .card2:hover {
@@ -796,12 +814,7 @@ button:active {
 .hero-slide-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72) 0%,
-    rgba(0, 0, 0, 0.25) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.25) 50%, transparent 100%);
   pointer-events: none;
 }
 
@@ -828,7 +841,7 @@ button:active {
   color: #fff;
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 3px 10px;
+  padding: 10px 10px;
   border-radius: 50px;
   text-transform: capitalize;
 }
@@ -1048,7 +1061,9 @@ button:active {
   color: #d1d5db;
   padding: 0 2px;
   cursor: pointer;
-  transition: color 0.1s, transform 0.1s;
+  transition:
+    color 0.1s,
+    transform 0.1s;
   line-height: 1;
 }
 
@@ -1143,7 +1158,7 @@ button:active {
   font-weight: 700;
   padding: 3px 8px;
   border-radius: 50px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 /* ===================================================
@@ -1196,7 +1211,9 @@ button:active {
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .ruta-card:hover {
@@ -1231,7 +1248,7 @@ button:active {
   border-radius: 50px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Cuerpo de la tarjeta */
@@ -1700,7 +1717,7 @@ button:active {
 =================================================== */
 .gpx-card {
   border: 2px dashed rgba(213, 51, 105, 0.25);
-  background: linear-gradient(135deg, rgba(213,51,105,0.03) 0%, rgba(218,174,81,0.03) 100%);
+  background: linear-gradient(135deg, rgba(213, 51, 105, 0.03) 0%, rgba(218, 174, 81, 0.03) 100%);
 }
 
 .gpx-optional-badge {
@@ -1739,7 +1756,9 @@ button:active {
   border-radius: var(--radius-sm);
   padding: 32px 20px;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
   background: var(--bg);
 }
 
