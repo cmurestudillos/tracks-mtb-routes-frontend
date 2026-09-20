@@ -22,4 +22,11 @@ module.exports = {
     // Los hooks exhaustive-deps son advertencias informativas
     'react-hooks/exhaustive-deps': 'warn',
   },
+  overrides: [
+    {
+      // Scripts de build que se ejecutan en Node, no en el navegador
+      files: ['scripts/**/*.{js,mjs}'],
+      env: { node: true, browser: false },
+    },
+  ],
 };

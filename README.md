@@ -7,6 +7,7 @@
 ![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-11-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-instalable-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
 
 **SPA para explorar y compartir rutas MTB por España**
 
@@ -52,6 +53,7 @@ VITE_SERVER_URL=http://localhost:5005/api
 | axios | 1.x | HTTP client + interceptor JWT |
 | react-burger-menu | 3.1 | Sidebar móvil (slide) |
 | react-spinners | 0.14 | Loading spinners |
+| vite-plugin-pwa + Workbox | 1.3 | Service worker, manifiesto e instalación |
 
 ---
 
@@ -133,14 +135,56 @@ Panel lateral con animación `slide` (react-burger-menu). Se cierra automáticam
 
 ---
 
+## PWA — App instalable y offline
+
+La app es una Progressive Web App: se puede instalar en móvil y escritorio y sigue funcionando sin conexión.
+
+**Qué incluye:**
+
+| Pieza | Dónde |
+|-------|-------|
+| Manifiesto (nombre, iconos, colores, atajos) | generado por `vite-plugin-pwa` → `dist/manifest.webmanifest` |
+| Service worker (precaché + caché en runtime) | generado por Workbox → `dist/sw.js` |
+| Avisos de instalar / actualizar / offline | `src/components/PWAPrompt.jsx` |
+| Iconos PNG (64, 192, 512, maskable, apple-touch) | `public/pwa-*.png` — se generan con `pnpm icons` |
+
+**Estrategias de caché:**
+
+| Contenido | Estrategia | Caducidad |
+|-----------|-----------|-----------|
+| App shell (JS, CSS, HTML, iconos) | Precaché | por versión del build |
+| Teselas de OpenStreetMap | CacheFirst | 1000 teselas / 30 días |
+| Marcadores de Leaflet (unpkg) | CacheFirst | 1 año |
+| `GET` a la API (`VITE_SERVER_URL`) | NetworkFirst (8 s de espera) | 24 h |
+| Fotos de rutas, reseñas y perfiles | CacheFirst | 200 imágenes / 30 días |
+
+Sin conexión se abre la app y se ven las rutas ya visitadas junto a sus mapas; crear o editar sí necesita red.
+
+**Actualizaciones:** el modo es `prompt`, así que una versión nueva no se aplica sola — aparece un aviso *«Hay una nueva versión»* y la recarga la decide la persona usuaria.
+
+**Probar el service worker en local:**
+
+```bash
+pnpm build && pnpm preview     # http://localhost:4173
+pnpm dev:pwa                   # servidor de desarrollo con el service worker activo
+```
+
+En Chrome: DevTools → *Application* → *Service Workers* / *Manifest*, y *Network → Offline* para comprobar el modo sin conexión.
+
+**Regenerar los iconos:** `pnpm icons` rasteriza la rueda de `public/favicon.svg` a los PNG del manifiesto (script sin dependencias, en `scripts/generate-pwa-icons.mjs`). Solo hace falta si cambia el logo o los colores de marca.
+
+---
+
 ## Scripts
 
 ```bash
 pnpm dev          # desarrollo (puerto 3000, hot-reload)
+pnpm dev:pwa      # desarrollo con el service worker activo (probar la PWA)
 pnpm build        # build producción
 pnpm preview      # preview del build local
 pnpm lint         # ESLint — 0 errores
 pnpm lint:fix     # corregir automáticamente
+pnpm icons        # regenerar los iconos PNG de la PWA
 ```
 
 ---
@@ -154,4 +198,6 @@ pnpm lint:fix     # corregir automáticamente
 
 Sin esto, navegar directamente a `/rutas` o `/profile` devuelve 404.
 
-Añade la variable `VITE_SERVER_URL` en **Vercel → Settings → Environment Variables**.
+Añade la variable `VITE_SERVER_URL` en **Vercel → Settings → Environment Variables**. Se inyecta en el build y también define la regla de caché de la API dentro del service worker, así que debe estar presente al desplegar.
+
+`vercel.json` añade además cabeceras `Cache-Control: max-age=0, must-revalidate` para `/sw.js` y `/manifest.webmanifest`: sin ellas el CDN podría servir un service worker viejo y las actualizaciones tardarían en llegar.

@@ -16,6 +16,7 @@ node_modules/
 dist/
 dist-ssr/
 build/
+dev-dist/
 
 # ===================================================
 # LOGS
