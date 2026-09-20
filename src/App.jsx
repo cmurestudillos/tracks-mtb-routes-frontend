@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import { AuthContext } from './context/auth.context';
 import { useContext } from 'react';
 import AccessPage from './pages/AccessPage';
+import PWAPrompt from './components/PWAPrompt';
 
 function App() {
   const { isLoggedIn, loggedUserId } = useContext(AuthContext);
@@ -35,6 +36,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <PWAPrompt />
     </div>
   );
 }

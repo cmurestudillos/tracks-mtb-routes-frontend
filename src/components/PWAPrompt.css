@@ -1,0 +1,74 @@
+.pwa-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  left: auto;
+  z-index: 2000;
+  max-width: 360px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  border-top: 3px solid var(--gradient-start);
+  animation: pwa-toast-in 0.25s ease-out;
+}
+
+@keyframes pwa-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pwa-toast-text {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.pwa-toast-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.pwa-btn {
+  padding: 8px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pwa-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text);
+}
+
+.pwa-btn-primary {
+  border: none;
+  background: var(--gradient);
+  color: var(--text-on-gradient);
+  font-weight: 600;
+}
+
+.pwa-btn-primary:hover {
+  filter: brightness(1.05);
+  color: var(--text-on-gradient);
+}
+
+@media (max-width: 600px) {
+  .pwa-toast {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    max-width: none;
+  }
+}
